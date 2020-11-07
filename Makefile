@@ -37,12 +37,28 @@ RGBLINK ?= $(RGBDS)rgblink
 .SECONDEXPANSION:
 .PRECIOUS:
 .SECONDARY:
-.PHONY: all red blue blue_debug clean tidy compare tools
+.PHONY: all red blue blue_debug release_build debug_build distclean clean tidy compare tools
 
 all: $(roms)
 red:        pokered.gbc
 blue:       pokeblue.gbc
 blue_debug: pokeblue_debug.gbc
+release: | release_build clean
+debug: | debug_build clean
+
+release_build: | red blue
+	mkdir -p ../build
+	cp pokered.gbc  ../build/pokered.gbc
+	cp pokeblue.gbc  ../build/pokeblue.gbc
+
+debug_build: blue_debug
+	mkdir -p ../build
+	cp pokeblue_debug.gbc  ../build/pokeblue_debug.gbc
+	cp pokeblue_debug.map  ../build/pokeblue_debug.map
+	cp pokeblue_debug.sym  ../build/pokeblue_debug.sym
+
+distclean: clean
+	rm -r -f ../build
 
 clean: tidy
 	find gfx \( -iname '*.1bpp' -o -iname '*.2bpp' -o -iname '*.pic' \) -delete
