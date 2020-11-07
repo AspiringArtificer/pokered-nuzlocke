@@ -1,4 +1,4 @@
-# Pokémon Red and Blue -- Nuzlocke Edition [![Build Status][travis-badge]][travis]
+# Pokémon Red and Blue -- Nuzlocke Edition
 
 This is a fork of the [**Pokémon Red/Blue**][pokered] dissassembly. The goal of this project is to add a small subset of features for Red/Blue [**Nuzlocke challenges**][nuzlocke].
 
