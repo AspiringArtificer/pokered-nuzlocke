@@ -2123,6 +2123,7 @@ wChosenMenuItem::
 
 wOutOfBattleBlackout::
 ; non-zero when the whole party has fainted due to out-of-battle poison damage
+; this is also use for nuzlocke force to title screen logic
 	ds 1
 
 wMenuExitMethod::

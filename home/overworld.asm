@@ -768,6 +768,8 @@ HandleBlackOut::
 	call ResetStatusAndHalveMoneyOnBlackout
 	call SpecialWarpIn
 	call PlayDefaultMusicFadeOutCurrent
+	ld a, $01
+	ld [wOutOfBattleBlackout], a
 	jp SpecialEnterMap
 
 StopMusic::

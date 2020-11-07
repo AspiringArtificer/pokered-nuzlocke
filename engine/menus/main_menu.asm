@@ -314,6 +314,9 @@ StartNewGameDebug:
 
 ; enter map after using a special warp or loading the game from the main menu
 SpecialEnterMap::
+	ld a, [wOutOfBattleBlackout]
+	and a
+	jr nz, .blackOutQuit
 	xor a
 	ldh [hJoyPressed], a
 	ldh [hJoyHeld], a
@@ -328,6 +331,9 @@ SpecialEnterMap::
 	and a
 	ret nz
 	jp EnterMap
+.blackOutQuit
+	xor a
+	jp $100 ;full soft reset
 
 ContinueText:
 	db "CONTINUE"
