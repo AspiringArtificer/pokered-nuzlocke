@@ -41,7 +41,8 @@ ViridianCityScript_1900b:
 
 ViridianCityScript_1903d:
 	CheckEvent EVENT_GOT_POKEDEX
-	ret nz
+	;if we have the dex, start the nuzlocke and quit
+	jr nz, .start_nuzlocke
 	ld a, [wYCoord]
 	cp 9
 	ret nz
@@ -56,6 +57,9 @@ ViridianCityScript_1903d:
 	call ViridianCityScript_190cf
 	ld a, $3
 	ld [wViridianCityCurScript], a
+	ret
+.start_nuzlocke
+	SetEvent EVENT_START_NUZLOCKE
 	ret
 
 ViridianCityScript1:

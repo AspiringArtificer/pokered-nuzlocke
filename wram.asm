@@ -1568,6 +1568,15 @@ wIsInBattle::
 ; trainer battle, this is 2
 	ds 1
 
+wIsNuzlocke::
+; store Nuzlocke state
+; 1 is enabled
+	ds 1
+
+wCantCatchMon::
+; when 1 catching is disabled
+	ds 1
+
 wPartyGainExpFlags::
 ; flags that indicate which party members should be be given exp when GainExperience is called
 	flag_array 6
@@ -3119,6 +3128,12 @@ wDayCareMonName:: ds NAME_LENGTH
 wDayCareMonOT::   ds NAME_LENGTH
 
 wDayCareMon:: box_struct wDayCareMon
+
+wRouteEncounters::
+; lazy method to track encountered areas
+; dedicated byte for each area
+; only first bit is used
+	ds 247
 
 wMainDataEnd::
 
