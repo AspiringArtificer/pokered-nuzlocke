@@ -115,7 +115,7 @@ ItemUseBall:
 ; If this is for the old man battle, skip checking if the party & box are full.
 	ld a, [wBattleType]
 	dec a
-	jr z, .canUseBall
+	jr z, .oldManBall
 
 	ld a, [wPartyCount] ; is party full?
 	cp PARTY_LENGTH
@@ -125,6 +125,12 @@ ItemUseBall:
 	jp z, BoxFullCannotThrowBall
 
 .canUseBall
+	; Check Nuzlocke override
+	ld a, [wCantCatchMon]
+	and a
+	jp nz, ItemUseNotTime
+; the old man doesn't care about your Nuzlocke
+.oldManBall
 	xor a
 	ld [wCapturedMonSpecies], a
 
