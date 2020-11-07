@@ -6284,6 +6284,64 @@ DoBattleTransitionAndInitBattleVariables:
 	ld [wPlayerDisabledMove], a
 	ret
 
+;Check if first Nuzlocke encounter.
+;If so, store location.
+;Otherwise, disable poke balls.
+;@return registers preserved on stack
+CheckNuzlockeFirstEncounter::
+	;preserve registry
+	push af
+	push bc
+	;init catchable status
+	ld a, $00
+	ld [wCantCatchMon], a
+
+	;if the Nuzlocke isn't started quit
+	CheckEvent EVENT_START_NUZLOCKE
+	jr z, .cleanup
+
+	;load in enemy mon and convert to pokedex entry
+	ld a, [wEnemyMonSpecies]
+	ld [wd11e], a
+	predef IndexToPokedex
+	ld a, [wd11e]
+	;check if mon is owned
+	;if so, not catchable
+	dec a
+	ld c, a
+	ld b, FLAG_TEST
+	ld hl, wPokedexOwned
+	predef FlagActionPredef
+	ld a, c
+	and a
+	jr nz, .not_catchable
+
+	;get encounter address from base
+	;count goes to $F7, so need to carry
+	ld a, [wCurMap]
+	ld bc, wRouteEncounters
+	add c
+	ld c, a
+	ld a, b
+	adc a, $00
+	ld b,a
+	;check if already encountered in area
+	ld a, [bc]
+	and a
+	jr nz, .not_catchable
+	;set encounter to true
+	ld a, $01
+	ld [bc], a	
+.cleanup
+	;clean up registry
+	pop bc
+	pop af
+	ret
+.not_catchable
+	ld a, $01
+	ld [wCantCatchMon], a
+	jr .cleanup
+
 ; swaps the level values of the BattleMon and EnemyMon structs
 SwapPlayerAndEnemyLevels:
 	push bc
@@ -6828,6 +6886,8 @@ InitWildBattle:
 	ldh [hStartTileID], a
 	hlcoord 12, 0
 	predef CopyUncompressedPicToTilemap
+	;check Nuzlocke rules
+	call CheckNuzlockeFirstEncounter
 
 ; common code that executes after init battle code specific to trainer or wild battles
 _InitBattleCommon:
