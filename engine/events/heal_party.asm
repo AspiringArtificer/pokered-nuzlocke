@@ -60,14 +60,23 @@ HealParty:
 	jr nz, .pp
 	pop de
 
+
+	;restore HP
 	ld hl, wPartyMon1MaxHP - wPartyMon1HP
 	add hl, de
 	ld a, [hli]
 	ld [de], a
 	inc de
+	;skip HP restore fainted
+	ld a, [de]
+	and a
+	jr z, .skipMon
+
+	;set the HP for the mon to max
 	ld a, [hl]
 	ld [de], a
 
+.skipMon
 	pop de
 	pop hl
 
