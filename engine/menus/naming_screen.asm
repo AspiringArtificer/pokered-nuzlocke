@@ -15,13 +15,8 @@ AskName:
 	call PrintText
 	hlcoord 14, 7
 	lb bc, 8, 15
-	ld a, TWO_OPTION_MENU
-	ld [wTextBoxID], a
-	call DisplayTextBoxID
+	; removed the nickname dialog from here
 	pop hl
-	ld a, [wCurrentMenuItem]
-	and a
-	jr nz, .declinedNickname
 	ld a, [wUpdateSpritesEnabled]
 	push af
 	xor a
